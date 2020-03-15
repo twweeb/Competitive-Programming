@@ -1,0 +1,17 @@
+copy assign 1
+clear 0
+insert 0 0 2
+back 0
+back 0
+front 0
+insert 0 0 2
+insert 1 0 4
+insert 0 0 16
+show 0
+back 1
+clear 1
+copy ctor 0
+insert 1 0 11
+insert 0 0 11
+show 1
+

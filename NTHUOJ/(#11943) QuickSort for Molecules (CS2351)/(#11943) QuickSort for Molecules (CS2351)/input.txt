@@ -1,0 +1,20 @@
+2
+6
+silicon_carbide                         SiC                               0
+gallium(III)_nitride                    GaN                               0
+caffeine                                C8H10N4O2                         0
+silicon(IV)_dioxide                     SiO2                              0
+oxygen                                  O                                 0
+hydrogen                                H2                                0
+10
+diethyl_ether                           CH3CH2OCH2CH3                 74.00
+addcrylonitrile                         H2C(CH)CN                     53.00
+amesite                                 Mg2Al(AlSiO5)(OH)4           278.00
+ammonium_hexathiocyanoplatinate(IV)     (NH4)2[Pt(SCN)6]             579.00
+maitotoxin                              C164H256Na2O68S2            3422.00
+barysilate                              MnPb8(Si2O7)3               2215.00
+montmorillonite_(clay)                  MgNaAl5(Si4O10)3(OH)6       1100.00
+uranium_hexafluoride                    F6U                          352.00
+stearic_acid                            CH3(CH2)16COOH               284.00
+cobalt(II)_ferricyanide                 Co3(Fe(CN)6)2                601.00
+

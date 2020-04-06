@@ -1,5 +1,5 @@
 **/.DS_Store
-**/.dSYM/
+**/*.dSYM/
 **/.vscode/
 **/a.out
 **/makefile

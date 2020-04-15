@@ -1,3 +1,4 @@
+# Generate Satisfied CNF!
 import random
 
 def generateCNF(n = int(random.random()*10000)%158 + 1, m = int(random.random()*10000)%1200 + 1):
@@ -10,8 +11,7 @@ def generateCNF(n = int(random.random()*10000)%158 + 1, m = int(random.random()*
         clause = []
         z = int(random.random()*10000)%n + 1
         clause_size = int(random.random()*10000)%n
-        if i % int(n/2) == 0 and clause_size > 0: 
-            clause.append(z if var[z-1] == 1 else -z)
+        clause.append(z if var[z-1] == 1 else -z)
         for j in range(clause_size):
             seed = int(random.random()*10000)
             idx = int(random.random()*10000)%n

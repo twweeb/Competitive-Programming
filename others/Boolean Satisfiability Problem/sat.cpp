@@ -8,18 +8,17 @@
 
 #include <bits/stdc++.h>
 
-#define MAXN 160
-#define MAXM 1200
+#define MAXN 30000
+#define MAXM 60000
 
 using namespace std;
 
-vector<int> clause[MAXM], relatedClause[MAXN];
-int n = 0, m = 0;
+int n = 0, m = 0, limit_time = 0;
 bool var[MAXN], isAssign[MAXN], isTrue[MAXM];
+vector<int> clause[MAXM], relatedClause_pos[MAXN], relatedClause_neg[MAXN];
 
 bool check()
 {
-    //cout << "------------------m: " << m << " n: " << n << "---------------" << endl;
     bool isSat = true;
     for (int i = 0; i < m; ++i) isSat &= isTrue[i];
     return isSat;
@@ -32,31 +31,18 @@ bool dfs(int cur)
 
     isAssign[cur] = true;
     var[cur] = false;
-    bool isConflict = false, isDone = false, isForTrue = false;;
-    vector<int> set2true;
+    bool isConflict = false, isDone = false, isForTrue = false;
+    vector<int> set2true, var_set2true;
 
 CheckAgain:
-    for (int clauseId : relatedClause[cur])
+    for (int clauseId : (isForTrue) ? relatedClause_pos[cur] : relatedClause_neg[cur])
     {
         if (isTrue[clauseId]) continue;
-        for(int elem : clause[clauseId])
-        {
-            if(abs(elem) - 1 == abs(cur))
-            {
-                if(!isForTrue && elem < 0)
-                {
-                    isTrue[clauseId] = true;
-                    set2true.push_back(clauseId);
-                    break;
-                }
-                if(isForTrue && elem > 0)
-                {
-                    isTrue[clauseId] = true;
-                    set2true.push_back(clauseId);
-                    break;
-                }
-            }
-        }
+        isTrue[clauseId] = true;
+        set2true.push_back(clauseId);
+    }
+    for (int clauseId : (isForTrue) ? relatedClause_neg[cur] : relatedClause_pos[cur])
+    {
         if (!isTrue[clauseId])
         {
             int not_assign = 0, var_name;
@@ -70,15 +56,39 @@ CheckAgain:
             }
             if (not_assign == 1)
             {
-                if (!isTrue[clauseId])
+                isAssign[abs(var_name)-1] = true;
+                var_set2true.push_back(abs(var_name)-1);
+                var[abs(var_name)-1] = (var_name > 0) ? true : false;
+                isTrue[clauseId] = true;
+                set2true.push_back(clauseId);
+                if (var_name > 0)
                 {
-                    isAssign[abs(var_name)-1] = true;
-                    var[abs(var_name)-1] = (var_name > 0) ? true : false;
-                    isTrue[clauseId] = true;
-                    set2true.push_back(clauseId);
+                    for (int relateClauseID: relatedClause_pos[abs(var_name)-1])
+                    {
+                        if (!isTrue[relateClauseID])
+                        {
+                            isTrue[relateClauseID] = true;
+                            set2true.push_back(relateClauseID);
+                        }  
+                    }
+                }
+                else
+                {
+                    for (int relateClauseID: relatedClause_neg[abs(var_name)-1])
+                    {
+                        if (!isTrue[relateClauseID])
+                        {
+                            isTrue[relateClauseID] = true;
+                            set2true.push_back(relateClauseID);
+                        }  
+                    }
                 }
             }
-            else if (not_assign == 0 && !isTrue[clauseId]) isConflict = true;
+            else if (not_assign == 0 && !isTrue[clauseId]) 
+            {
+                isConflict = true;
+                break;
+            }
         }
     }
     if (!isConflict) 
@@ -86,17 +96,18 @@ CheckAgain:
         isDone = dfs(cur+1);
         if (isDone) return true;
     }
+    for (int clauseId : set2true) isTrue[clauseId] = false;
+    for (int var_ass : var_set2true) isAssign[var_ass] = false;
+    set2true.clear();
+    var_set2true.clear();
 
     if (!isForTrue && (isConflict || !isDone))
     {
         isConflict = isDone = false;
-        for(int clauseId : set2true) isTrue[clauseId] = false;
-        set2true.clear();
         var[cur] = true;
         isForTrue = true;
         goto CheckAgain;
     }
-    if(isConflict) return false;
     isAssign[cur] = false;
     return false;
 }
@@ -128,12 +139,12 @@ void solve() {
             if (t > 0) 
             {
                 clause[i].push_back(t);
-                relatedClause[t-1].push_back(i);
+                relatedClause_pos[t-1].push_back(i);
             }
             else 
             {
                 clause[i].push_back(t);
-                relatedClause[-t-1].push_back(i);
+                relatedClause_neg[-t-1].push_back(i);
             }
             cin >> t;
         }

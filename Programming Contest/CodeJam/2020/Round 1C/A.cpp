@@ -2,7 +2,7 @@
 //  A.cpp
 //  2020 Google Code Jam Round 1C A.Overexcited Fan
 //
-//  Created by Lei Hsiung on 2020/05/01.
+//  Created by Lei Hsiung on 2020/05/02.
 //  Copyright © 2020 Lei Hsiung. All rights reserved.
 //
 

@@ -67,7 +67,8 @@ void solve_using_vector()
 {
     int n, m;
     cin >> n >> m;
-    vector<vector<int> > heap(n+1);
+    vector<vector<int> *> heap(n+1);
+    for (int i = 1; i <= n; ++i) heap[i] = new vector<int>();
     while (m--)
     {
         string op;
@@ -76,34 +77,41 @@ void solve_using_vector()
         {
             int i, x;
             cin >> i >> x;
-            heap[i].push_back(x);
+            heap[i]->push_back(x);
+            sort(heap[i]->begin(), heap[i]->end());
         }
         else if (op[0] - 'j' == 0)
         {
             int i, j;
             cin >> i >> j;
-            for (int k = 0; k < heap[j].size(); ++k) heap[i].push_back(heap[j][k]);
-            heap[j].clear();
+            if (heap[i]->size() < heap[j]->size())
+            {
+                heap[0] = heap[i];
+                heap[i] = heap[j];
+                heap[j] = heap[0];
+            }
+            for (int k = 0; k < heap[j]->size(); ++k)
+                heap[i]->push_back((*heap[j])[k]);
+            sort(heap[i]->begin(), heap[i]->end());
+            heap[j]->clear();
         }
         else if (op[0] - 'e' == 0)
         {
             int i;
             cin >> i;
-            sort(heap[i].begin(), heap[i].end());
-            if (heap[i].empty()) cout << "NULL\n";
+            if (heap[i]->empty()) cout << "NULL\n";
             else
             {
-                cout << heap[i].front() << '\n';
-                heap[i].erase(heap[i].begin());
+                cout << heap[i]->front() << '\n';
+                heap[i]->erase(heap[i]->begin());
             }
         }
         else if (op[0] - 'l' == 0)
         {
             int i;
             cin >> i;
-            sort(heap[i].begin(), heap[i].end());
-            if (heap[i].empty()) cout << "NULL\n";
-            else cout << heap[i].front() << '\n';
+            if (heap[i]->empty()) cout << "NULL\n";
+            else cout << heap[i]->front() << '\n';
         }
     }
 }
@@ -111,7 +119,7 @@ void solve_using_vector()
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    //solve_using_vector();
+    //solve_using_vector(); // It would cause TLE.
     solve_using_p_queue();
     return 0;
 }

@@ -10,120 +10,147 @@
 
 using namespace std;
 
-int leftmost[501] = {0}, upmost[501] = {0}, k;
+int leftmost[500] = {0}, upmost[500] = {0}, rowCnt[500] = {0}, colCnt[500] = {0};
+int r, c;
 
-pair<int, int> pointer_reset(vector<vector<int>> &mat)
+void pointer_reset(vector<vector<int>> &mat, pair<int, int> &pos)
 {
-    for (int j = 0; j < mat[0].size(); ++j)
-        for (int i = 0; i < mat.size(); ++i)
-            if (mat[i][j] == 1) 
-            {
-                return make_pair(i, j);
-            }
-    return {-1, -1};
+    for (int j = 0; j < c; ++j)
+    {
+        if (upmost[j] != -1)
+        {
+            pos.first = upmost[j];
+            pos.second = j;
+            return;
+        }
+    }
 }
 
-pair<int, int> right_shift(vector<vector<int>> &mat, int x, int y)
+void right_shift(vector<vector<int>> &mat, pair<int, int> &pos)
 {
-    if (leftmost[x] < 0) return {-1,-1};
-    if (y + k < mat[x].size())
+    if (pos.second + 1 < c)
     {
-        bool fail = false;
-        for (int i = 1; i <= k; ++i) 
+        ++pos.second;
+        while (mat[pos.first][pos.second] != 1) 
+        // Notice that the pointer will omit the removed pointer, and point to the next remaining!! 
         {
-            if (mat[x][y+i] == 0)
+            if (pos.second + 1 < c)
+                ++pos.second;
+            else 
             {
-                y = leftmost[x];
-                fail = true;
-                break;
+                pos.second = leftmost[pos.first];
+                return;
             }
         }
-        if (!fail) y += k;
     }
-    else y = leftmost[x];
-    return make_pair(x,y);
+    else pos.second = leftmost[pos.first];
 }
 
-pair<int, int> down_shift(vector<vector<int>> &mat, int x, int y)
+void down_shift(vector<vector<int>> &mat, pair<int, int> &pos)
 {
-    if (upmost[y] < 0) return {-1,-1};
-    if (x + k < mat.size())
+    if (pos.first + 1 < r)
     {
-        bool fail = false;
-        for (int i = 1; i <= k; ++i) 
+        ++pos.first;
+        while (mat[pos.first][pos.second] != 1)
+        // Notice that the pointer will omit the removed pointer, and point to the next remaining!!
         {
-            if (mat[x+i][y] == 0)
+            if (pos.first + 1 < r)
+                ++pos.first;
+            else 
             {
-                x = upmost[y];
-                fail = true;
-                break;
+                pos.first = upmost[pos.second];
+                return;
             }
         }
-        if (!fail) x += k;
     }
-    else x = upmost[y];
-    return make_pair(x,y);
+    else pos.first = upmost[pos.second];
 }
 
-void show(int x, int y, vector<vector<int>> &mat)
+void update(vector<vector<int>> &mat, pair<int, int> &pos)
 {
-    cout << x << ' ' << y << '\n';
-    for (int i = 0; i < mat.size(); ++i)
+    int x = pos.first, y = pos.second;
+    --rowCnt[x]; --colCnt[y];
+    if (rowCnt[x] != 0)
     {
-        for(int j = 0; j < mat[i].size(); ++j)
+        if (y==leftmost[x])
+        for (int j = leftmost[x]; j < c; ++j)
+            if (mat[x][j] == 1) 
+            {
+                leftmost[x] = j;
+                break;
+            }
+    }
+    else leftmost[x] = -1;
+
+    if (colCnt[y] != 0)
+    {
+        if (x==upmost[y])
+        for (int i = upmost[y]; i < r; ++i)
+            if (mat[i][y] == 1) 
+            {
+                upmost[y] = i;
+                break;
+            }
+    }
+    else upmost[y] = -1;
+}
+
+void remove_p(vector<vector<int>> &mat, pair<int, int> &pos)
+{
+    // Debug Purpose
+    // cout << "remove " << pos.first << ' ' << pos.second << '\n';
+    mat[pos.first][pos.second] = 0;
+    update(mat, pos);
+}
+
+void show(pair<int, int> &pos, vector<vector<int>> &mat) //For Debug
+{
+    cout << "point to " << pos.first << ' ' << pos.second << '\n';
+    cout << "     ";
+    for (int i = 0; i < c; ++i)
+        cout << upmost[i] << ' ';
+    cout << "\n-------------------------\n";
+    for (int i = 0; i < r; ++i)
+    {
+        cout << leftmost[i] << "  | ";
+        for(int j = 0; j < c; ++j)
+        {
             cout << mat[i][j] << ' ';
+        }
         cout << '\n';
     }
 }
 
-void update_most(vector<vector<int>> &mat, int x, int y)
-{
-    leftmost[x] = -1; upmost[y] = -1;
-    for (int j = mat[x].size()-1; j >= 0; --j)
-    {
-        if (mat[x][j] == 1) leftmost[x] = j;
-    }
-    for (int i = mat.size()-1; i >= 0; --i)
-    {
-        if (mat[i][y] == 1) upmost[y] = i;
-    }
-}
-
-void remove_p(vector<vector<int>> &mat, int x, int y)
-{
-    mat[x][y] = 0;
-    update_most(mat,x,y);
-}
-
 void solve() {
-    int r, c;
+    int k;
     cin >> r >> c >> k;
     vector<vector<int>> mat(r,vector<int>(c));
     for (int i = 0; i < r; ++i)
         for (int j = 0; j < c; ++j)
             mat[i][j] = 1;
-
-    int cnt = 0;
+    for (int i = 0; i < r; ++i) rowCnt[i] = c;
+    for (int i = 0; i < c; ++i) colCnt[i] = r;
+    int cnt = 0, stop = r*c-1;
     pair <int, int> cur = {0,0};
-    while (true)
+    if (stop != 0)
     {
-        //show(cur.first, cur.second, mat);
-        cur = right_shift(mat, cur.first, cur.second);
-        remove_p(mat, cur.first, cur.second);
-        cur = right_shift(mat, cur.first, cur.second);
-        //cout << cur.first << ' ' << cur.second << '\n';
-        if (cur.first == -1) cur = pointer_reset(mat);
-        if (++cnt == r*c - 1) break;
-        
-        //show(cur.first, cur.second, mat);
-        cur = down_shift(mat, cur.first, cur.second);
-        remove_p(mat, cur.first, cur.second);
-        cur = down_shift(mat, cur.first, cur.second);
-        //cout << cur.first << ' ' << cur.second << '\n';
-        if (cur.first == -1) cur = pointer_reset(mat);
-        if (++cnt == r*c - 1) break;
+        while (true)
+        {
+            for (int i = 0; i < k; ++i) right_shift(mat, cur);
+            remove_p(mat, cur);
+            if (rowCnt[cur.first] != 0) right_shift(mat, cur);
+            else pointer_reset(mat, cur);
+            if (++cnt == stop) break;
+            //show(cur, mat);
+            
+            for (int i = 0; i < k; ++i) down_shift(mat, cur);
+            remove_p(mat, cur);
+            if (colCnt[cur.second] != 0) down_shift(mat, cur);
+            else pointer_reset(mat, cur);
+            if (++cnt == stop) break;
+            //show(cur, mat);
+        }
     }
-    //show(cur.first, cur.second, mat);
     cout << cur.first << ' ' << cur.second << '\n';
 }
 

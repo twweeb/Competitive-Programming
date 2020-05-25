@@ -1,8 +1,8 @@
 //
-//  C.cpp  (This was WA.)
+//  C.cpp
 //  NCTU CPI Midterm
 //
-//  Created by Lei Hsiung on 2020/05/15.
+//  Created by Lei Hsiung on 2020/05/25.
 //  Copyright © 2020 Lei Hsiung. All rights reserved.
 //
 

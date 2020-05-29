@@ -30,10 +30,7 @@ long long _hash(vector<vector<int> > &mat)
     long long l = 0LL;
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
-        {
-            l <<= 4;
-            l += (mat[i][j]-1);
-        }
+            l = (l << 4) + (mat[i][j]-1);
     return l;
 }
 
@@ -47,7 +44,7 @@ void show(vector<vector<int> > &mat) //For debug
         }
         cout << '\n';
     }
-        cout << "--------------------------\n";
+    cout << "--------------------------\n";
 }
 
 void bfs (vector<vector<int> > &cur, vector<vector<int> > &goal)
@@ -70,8 +67,6 @@ void bfs (vector<vector<int> > &cur, vector<vector<int> > &goal)
             for (int j = 0; j < 9; ++j)
             {
                 vector<vector<int> > t = op(p, j, true);
-                //show(t);
-                //for(int k = 0; k < 1e8;k++){}
                 hashed = _hash(t);
                 if (bVisited.find(hashed) != bVisited.end())
                 {
@@ -93,8 +88,6 @@ void bfs (vector<vector<int> > &cur, vector<vector<int> > &goal)
             for (int j = 0; j < 9; ++j)
             {
                 vector<vector<int> > t = op(p, j, false);
-                //cout << "hello\n";
-                //show(t);
                 hashed = _hash(t);
                 if (hVisited.find(hashed) != hVisited.end())
                 {

@@ -29,11 +29,7 @@ long long _hash(vector<vector<int> > &mat)
 {
     long long l = 0LL;
     for (int i = 0; i < 4; ++i)
-<<<<<<< HEAD
         for (int j = 0; j < 4; ++j)
-=======
-        for (int j = 0; j < 3; ++j)
->>>>>>> 582c69a993c192b6689e9a51af131d34c117db36
         {
             l <<= 4;
             l += (mat[i][j]-1);

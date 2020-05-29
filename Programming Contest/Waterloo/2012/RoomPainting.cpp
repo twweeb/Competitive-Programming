@@ -1,8 +1,8 @@
 //
-//  D.cpp
-//  NCTU CPI Quiz 3
+//  RoomPainting.cpp
+//  Waterloo Programming Contest 2012-10-13
 //
-//  Created by Lei Hsiung on 2020/05/01.
+//  Created by Lei Hsiung on 2020/05/13.
 //  Copyright © 2020 Lei Hsiung. All rights reserved.
 //
 
@@ -33,8 +33,8 @@ void solve() {
     cin >> n >> m;
     vector<double> shopColour(n);
 
-    sort(shopColour.begin(), shopColour.end());
     for (int i = 0; i < n; ++i) cin >> shopColour[i];
+    sort(shopColour.begin(), shopColour.end());
 
     while (m--)
     {

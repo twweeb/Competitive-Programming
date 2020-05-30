@@ -1,63 +1,67 @@
+//
+//  main.cpp
+//  (#9022) Tree distance
+//
+//  Created by Magic Bear on 2017/10/5.
+//  Copyright © 2017年 Magic Bear. All rights reserved.
+//
+
 #include<iostream>
 #include<vector>
 
 using namespace std;
 
-struct node{
-    int val;
+struct Node{
+    int name;
     int level;
-    node* parent;
+    Node* parent;
 };
 
-int FindDis(node* a, node *b)
-{
-    if(a->val==b->val) return 0;
-    if(a->level > b->level) return 1+FindDis(a->parent,b);
-    else return 1+FindDis(a,b->parent);
+int FindDistance(Node* A, Node* B){
+    if(B->name == A->name) return 0;
+    if(A->level > B->level){
+        return 1+FindDistance(A->parent, B);
+    }
+    else return 1+FindDistance(A, B->parent);
 }
 
-int main()
-{
-    int N, cnt=1;
-    while(cin>>N)
-    {
-        vector<node*> handle;
+int main(){
+    int j=1;
+    int N;
+    while(cin>>N){
+        vector<Node*> handle;
         handle.push_back(NULL);
-        node *root;
-        for(int i=1 ; i<=N ; i++)
-        {
-            node *e = new node();
-            e->val = i;
+        Node *root;
+        int i;
+        for(i = 1; i <= N; i++){
+            Node *e = new Node();
+            e->name = i;
             e->parent = NULL;
             handle.push_back(e);
         }
-        for(int i=1 ; i<=N ; i++)
-        {
-            int par;
-            cin >> par;
-            if(par==-1) root = handle[i];
-            else handle[i]->parent = handle[par];
+        for(i = 1; i <= N;i++){
+            int parent;
+            cin >> parent;
+            if(parent == -1) root = handle[i];
+            else handle[i]->parent = handle[parent];
         }
-        for(int i=1 ; i<=N ; i++)
-        {
-            node *curr = handle[i];
+        for(i = 1;i <= N; i++){
+            Node* curr = handle[i];
             int level = 0;
-            while(curr!=NULL)
-            {
+            while(curr!=NULL){
                 level++;
                 curr = curr->parent;
             }
             handle[i]->level = level;
         }
         int n,m;
-        cout << "Case " << cnt << ":";
-        while(cin>>n>>m)
-        {
-            if(n==0 && m==0) break;
-            cout << " " << FindDis(handle[n],handle[m]);
+        cout << "Case " << j << ":";
+        while(cin>>m>>n){
+            if(m==0 && n==0) break;
+            cout << " " << FindDistance(handle[m],handle[n]);
         }
         cout << endl;
-        cnt++;
+        j++;
     }
     return 0;
 }

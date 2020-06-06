@@ -1,6 +1,7 @@
 //
 //  C.cpp
 //  NCTU CPI Midterm Makeup
+//  Concept: Using Matrix Multiplication to ensure time complexity.
 //
 //  Created by Lei Hsiung on 2020/06/06.
 //  Copyright © 2020 Lei Hsiung. All rights reserved.

@@ -1,6 +1,7 @@
 //
 //  C.cpp
 //  Codeforces Round #595 - C2. Good Numbers (hard version)
+//  Concept: Ternary Number, Carry Out.
 //
 //  Created by twweeb on 2020/06/13.
 //  Copyright © 2020 twweeb. All rights reserved.
@@ -10,7 +11,7 @@
  
 using namespace std;
 
-long long exp(long long n, int p)
+long long exp(long long n, int p) // Fast Exp
 {
     if (p == 0) return 1LL;
     if (p == 1) return n;

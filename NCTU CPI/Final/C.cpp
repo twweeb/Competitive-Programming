@@ -35,7 +35,7 @@ bool isEqui(string &s, string &t)
 
     // Divide and Conquer
     string s1(s, 0, n-n/2), s2(s, n-n/2, n/2), t1(t, 0, n-n/2), t2(t, n-n/2, n/2);
-    return isEqui(s1,t1)&&isEqui(s2,t2);
+    return isEqui(s1,t1)&isEqui(s2,t2);
 }
 
 void solve() {

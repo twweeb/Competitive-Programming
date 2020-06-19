@@ -12,7 +12,6 @@ using namespace std;
 
 map<pair<int, int>, int> mp;
 
-const int MAX_INT = 214748364;
 int goalH, goalT;
 
 int hashing(pair<int, int> &t) { return (t.first+t.second)*(t.first+t.second+1)/2+t.second;}
@@ -36,16 +35,15 @@ pair<int, int> op(pair<int, int> t, int opcode)
 
 int bfs()
 {
-    int H = 0, T = 0;
     queue<pair<int, int>> q;
     unordered_set<int> h;
     if (goalH==0 && goalT==0) return 0;
-    q.push({H,T});
+    q.push({0,0});
     map<pair<int,int>, int> mp;
     mp[{0,0}] = 0;
     h.insert(0);
 
-    int _h = 0;
+    int val = 0;
     while (true)
     {
         pair<int, int> t = q.front();
@@ -62,9 +60,9 @@ int bfs()
             if (max(p.first, p.second) >= 1500) continue;
             else if (p.first == goalH && p.second == goalT) return cnt+1;
 
-            _h = hashing(p);
-            if (h.find(_h) != h.end()) continue;
-            else h.insert(_h);
+            val = hashing(p);
+            if (h.find(val) != h.end()) continue;
+            else h.insert(val);
             q.push(p);
             mp[p] = cnt+1;
         }
@@ -74,7 +72,7 @@ int bfs()
 void solve() {
     int ans;
     cin >> goalH >> goalT;
-    cout << bfs() << endl;
+    cout << bfs() << '\n';
 }
 
 int main() {

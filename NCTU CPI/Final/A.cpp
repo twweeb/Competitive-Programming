@@ -10,10 +10,7 @@
 
 using namespace std;
 
-long long square(long long n)
-{
-    return n*n;
-}
+long long square(long long n) {return n*n;}
 
 void solve() {
     int nCases = 0;

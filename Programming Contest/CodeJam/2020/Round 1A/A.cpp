@@ -1,6 +1,6 @@
 //
 //  A.cpp
-//  2020 Google Code Jam Round 1C A. Pattern Matching
+//  2020 Google Code Jam Round 1A A. Pattern Matching
 //
 //  Created by Lei Hsiung on 2021/03/05.
 //  Copyright © 2021 Lei Hsiung. All rights reserved.

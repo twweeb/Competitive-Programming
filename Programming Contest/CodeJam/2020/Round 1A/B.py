@@ -9,7 +9,6 @@
 t = int(input())
 for x in range(t):
     goal = int(input())
-    bin_sum = list(enumerate([int(i) for i in bin(goal)[2:]],1)) 
     print("Case #{}:".format(x+1))
     extra_goal = 0
     cur_r = 1

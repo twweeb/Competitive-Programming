@@ -6,3 +6,6 @@
 **/tmp
 **/in
 **/*.swp
+**/test.in
+**/run.sh
+
